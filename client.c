@@ -51,7 +51,7 @@ int	main(int argc, char **argv)
 	if (argc != 3)
 		return (0);
 	pid = atoi(argv[1]); // ここ普通のatoi使っているから注意
-	if (pid >= 0)
+	if (pid <= 0)
 		return (0);
 	send_str(pid, argv[2]);
 }
