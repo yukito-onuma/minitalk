@@ -31,7 +31,7 @@ void	send_char(int pid, char c)
 		else
 			kill(pid, SIGUSR2);
 		digit--;
-		usleep(50);
+		usleep(200);
 	}
 }
 
