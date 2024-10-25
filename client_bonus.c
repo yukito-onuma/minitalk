@@ -6,38 +6,50 @@
 /*   By: yonuma <yonuma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 18:26:49 by yonuma            #+#    #+#             */
-/*   Updated: 2024/09/10 18:26:51 by yonuma           ###   ########.fr       */
+/*   Updated: 2024/10/25 18:05:53 by yonuma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <signal.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
 
-void	handler(int signum)
-{
-	static char	c = 0;
-	static int	digit = 0;
 
-	if (digit != 0)
-		c = c << 1;
-	if (signum == SIGUSR1)
-		c |= 1;
-	digit++;
-	if (digit == 8)
+void	send_char(int pid, char c)
+{
+	int digit;
+
+	digit = 7;
+	while (digit >= 0)
 	{
-		write(1, &c, 1);
-		c = 0;
-		digit = 0;
+		if (c & (1 << digit))
+			kill(pid, SIGUSR1);
+		else
+			kill(pid, SIGUSR2);
+		digit--;
+		printf("dndndn\n");
+		usleep(1000);
 	}
 }
 
-int	main(void)
+void	send_str(int pid, char *str)
 {
-	printf("Server PID: %d\n", getpid());
-	signal(SIGUSR1, handler);
-	signal(SIGUSR2, handler);
-	while (1)
-		pause();
-	return (0);
+	while (*str)
+	{
+		send_char(pid, *str);
+		str++;
+	}
+}
+
+int	main(int argc, char **argv)
+{
+	int pid;
+
+	if (argc != 3)
+		return (0);
+	pid = atoi(argv[1]); // ここ普通のatoi使っているから注意
+	if (pid <= 0)
+		return (0);
+	send_str(pid, argv[2]);
 }
