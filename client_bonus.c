@@ -6,7 +6,7 @@
 /*   By: yonuma <yonuma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 18:26:49 by yonuma            #+#    #+#             */
-/*   Updated: 2024/11/01 15:28:49 by yonuma           ###   ########.fr       */
+/*   Updated: 2024/11/04 20:33:17 by yonuma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	send_char(int pid, char c)
 		else
 			kill(pid, SIGUSR2);
 		digit--;
-		usleep(1000);
+		usleep(500);
 	}
 }
 
