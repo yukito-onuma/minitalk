@@ -15,7 +15,8 @@ CFLAGS = -Wall -Wextra -Werror
 NAME = minitalk.a
 SRCS = server.c \
 	   client.c \
-	   libft/ft_bzero.c
+	   client_bonus.c \
+	   server_bonus.c
 	   
 # BONUS = 
 	   
