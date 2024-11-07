@@ -29,7 +29,10 @@ void	send_char(int pid, char c)
 		digit--;
 		while(!skip_char)
 			pause();
-		// usleep(200);
+		{
+			printf("%d\n", skip_char);
+		}
+		usleep(500);
 	}
 }
 
