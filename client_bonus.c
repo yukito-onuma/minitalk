@@ -12,7 +12,7 @@
 
 #include "minitalk.h"
 
-volatile sig_atomic_t skip_char = 0;
+volatile sig_atomic_t skip_char = 1;
 
 void	send_char(int pid, char c)
 {
@@ -21,14 +21,15 @@ void	send_char(int pid, char c)
 	digit = 7;
 	while (digit >= 0)
 	{
-		if (skip_char)
-			return;
+		skip_char = 0;
 		if (c & (1 << digit))
 			kill(pid, SIGUSR1);
 		else
 			kill(pid, SIGUSR2);
 		digit--;
-		usleep(1400);
+		while(!skip_char)
+			pause();
+		// usleep(200);
 	}
 }
 
@@ -36,22 +37,20 @@ void	send_str(int pid, char *str)
 {
 	while (*str)
 	{
-		if (!skip_char)
-			send_char(pid, *str);
+		send_char(pid, *str);
 		str++;
-		skip_char = 0;
 	}
 }
 
 void	sigusr1_handler(int sig)
 {
 	if (sig == SIGUSR1)
-		printf("OK!\n");
-	if (sig == SIGUSR2)
 	{
-		printf("KO!\n");
+		printf("OK!\n");
 		skip_char = 1;
 	}
+	if (sig == SIGUSR2)
+		printf("KO!\n");
 }
 
 int	main(int argc, char **argv)
@@ -67,8 +66,14 @@ int	main(int argc, char **argv)
 	sa.sa_handler = sigusr1_handler;
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = 0;
-	sigaction(SIGUSR1, &sa, NULL);
-	sigaction(SIGUSR2, &sa, NULL);
+	if (sigaction(SIGUSR1, &sa, NULL) == -1)
+	{
+		perror("sigaction");
+	}
+	if (sigaction(SIGUSR2, &sa, NULL) == -1)
+	{
+		perror("sigaction");
+	}
 	send_str(pid, argv[2]);
 
 	return (0);

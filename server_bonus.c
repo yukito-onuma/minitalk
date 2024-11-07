@@ -36,23 +36,29 @@ void handler(int signum, siginfo_t *info, void *context)
         c[digit / 8] <<= 1;
     if (signum == SIGUSR1)
         c[digit / 8] |= 1;
+    kill(info->si_pid, SIGUSR1);
     digit++;
-    if (digit == 8)
-        byte = check_utf8(c[0]);
-    if (byte == -1) {
-        memset(c, 0, sizeof(c));
-        kill(info->si_pid, SIGUSR2);
-        digit = 0;
-        byte = 0;
-        return;
-    }
-    if (8 * byte == digit)
+    // printf("byte: %d, digit: %d\n", byte, digit);
+    if (digit % 8 == 0)
     {
-        write(1, c, byte);
-        kill(info->si_pid, SIGUSR1);
-        memset(c, 0, sizeof(c)); // memset注意！
-        digit = 0;
-        byte = 0;
+        if (digit == 8)
+            byte = check_utf8(c[0]);
+        if (byte == -1)
+        {
+            memset(c, 0, sizeof(c));
+            kill(info->si_pid, SIGUSR2);
+            digit = 0;
+            byte = 0;
+            return;
+        }
+        if (8 * byte == digit)
+        {
+            write(1, c, byte);
+            // kill(info->si_pid, SIGUSR1);
+            memset(c, 0, sizeof(c)); // memset注意！
+            digit = 0;
+            byte = 0;
+        }
     }
 }
 
