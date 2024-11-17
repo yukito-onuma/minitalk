@@ -6,7 +6,7 @@
 /*   By: yonuma <yonuma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 18:26:49 by yonuma            #+#    #+#             */
-/*   Updated: 2024/11/17 15:59:37 by yonuma           ###   ########.fr       */
+/*   Updated: 2024/11/17 20:09:49 by yonuma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	send_char(int pid, char c)
 		{
 			printf("%d\n", skip_char);
 		}
-		// usleep(200);
+		usleep(200);
 	}
 }
 
@@ -63,7 +63,7 @@ int	main(int argc, char **argv)
 
 	if (argc != 3)
 		return (0);
-	pid = atoi(argv[1]); //ここ普通のatoi 使っているから注意
+	pid = ft_atoi(argv[1]); //ここ普通のatoi 使っているから注意
 	if (pid <= 0)
 		return (0);
 	sa.sa_handler = sigusr1_handler;

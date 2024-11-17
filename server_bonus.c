@@ -6,7 +6,7 @@
 /*   By: yonuma <yonuma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 18:27:10 by yonuma            #+#    #+#             */
-/*   Updated: 2024/11/04 20:39:33 by yonuma           ###   ########.fr       */
+/*   Updated: 2024/11/17 20:09:53 by yonuma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ void handler(int signum, siginfo_t *info, void *context)
         c[digit / 8] |= 1;
     kill(info->si_pid, SIGUSR1);
     digit++;
-    // printf("byte: %d, digit: %d\n", byte, digit);
     if (digit % 8 == 0)
     {
         if (digit == 8)
@@ -54,8 +53,7 @@ void handler(int signum, siginfo_t *info, void *context)
         if (8 * byte == digit)
         {
             write(1, c, byte);
-            // kill(info->si_pid, SIGUSR1);
-            memset(c, 0, sizeof(c)); // memset注意！
+            ft_memset(c, 0, sizeof(c)); // memset注意！
             digit = 0;
             byte = 0;
         }
