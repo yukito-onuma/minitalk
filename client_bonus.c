@@ -6,7 +6,7 @@
 /*   By: yonuma <yonuma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 18:26:49 by yonuma            #+#    #+#             */
-/*   Updated: 2024/11/07 21:08:12 by yonuma           ###   ########.fr       */
+/*   Updated: 2024/11/17 15:59:37 by yonuma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	send_char(int pid, char c)
 		{
 			printf("%d\n", skip_char);
 		}
-		usleep(100);
+		// usleep(200);
 	}
 }
 
