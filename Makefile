@@ -6,40 +6,49 @@
 #    By: yonuma <yonuma@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/01 14:19:47 by yonuma            #+#    #+#              #
-#    Updated: 2024/05/25 13:47:42 by yonuma           ###   ########.fr        #
+#    Updated: 2024/11/22 16:37:07 by yonuma           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-NAME = minitalk.a
-SRCS = server.c \
-	   client.c \
-	   client_bonus.c \
-	   server_bonus.c
-	   
-# BONUS = 
-	   
-OBJS = $(SRCS:.c=.o)
-OBJS_B = $(BONUS:.c=.o)
-# INCLUDES = -I includes
 
-all : $(NAME)
+SOURCES = server.c client.c server_bonus.c client_bonus.c
+OBJECTS = $(SOURCES:.c=.o)
 
-# bonus : 
-# 	@make all "OBJS = $(OBJS) $(OBJS_B)"
+all: server client server_bonus client_bonus
 
-$(NAME) : $(OBJS) $(OBJS_B)
-	ar rc $@ $^
+bonus: server_bonus client_bonus
 
-%.o:%.c
-	$(CC) -c $(CFLAGS) $^ -o $@
+server: server.o libft/libft.a printf/printf.a
+	$(CC) -o $@ $< -Llibft -lft -Lprintf -l:printf.a
 
-clean : 
-	rm -f $(OBJS) $(OBJS_B)
+client: client.o libft/libft.a printf/printf.a
+	$(CC) -o $@ $< -Llibft -lft -Lprintf -l:printf.a
 
-fclean : clean
-	rm -f $(NAME)
+server_bonus: server_bonus.o libft/libft.a printf/printf.a
+	$(CC) -o $@ $< -Llibft -lft -Lprintf -l:printf.a
 
-re : fclean all
-.PHONY : all clean fclean re
+client_bonus: client_bonus.o libft/libft.a printf/printf.a
+	$(CC) -o $@ $< -Llibft -lft -Lprintf -l:printf.a
+
+%.o: %.c
+	$(CC) -c $(CFLAGS) $< -o $@
+
+libft/libft.a:
+	make -C libft
+
+printf/printf.a:
+	make -C printf
+
+clean:
+	rm -f $(OBJECTS)
+	make -C libft clean
+	make -C printf clean
+
+fclean: clean
+	rm -f server client server_bonus client_bonus libft/libft.a printf/printf.a
+
+re: fclean all
+
+.PHONY: all bonus clean fclean re
