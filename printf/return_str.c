@@ -1,30 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minitalk.h                                         :+:      :+:    :+:   */
+/*   return_str.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yonuma <yonuma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/10 17:31:04 by yonuma            #+#    #+#             */
-/*   Updated: 2024/11/22 16:26:45 by yonuma           ###   ########.fr       */
+/*   Created: 2024/05/01 21:33:12 by yonuma            #+#    #+#             */
+/*   Updated: 2024/05/25 13:11:24 by yonuma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINITALK_H
-# define MINITALK_H
+#include "ft_printf.h"
 
-# include <limits.h>
-# include <signal.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <string.h>
-# include <unistd.h>
+int	return_str(char *str)
+{
+	int	len;
+	int	check;
 
-void	ft_bzero(void *b, size_t len);
-void	*ft_memset(void *ptr, int value, size_t num);
-int		ft_atoi(const char *str);
-int		ft_printf(const char *format, ...);
-int		return_int(int str);
-int		return_chr(int c);
-
-#endif
+	len = 0;
+	if (!str)
+	{
+		check = write(1, "(null)", 6);
+		if (check == -1)
+			return (-1);
+		return (6);
+	}
+	while (str[len] != '\0')
+		len++;
+	check = ft_putstr(str);
+	if (check == -1)
+		return (-1);
+	return (len);
+}

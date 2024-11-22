@@ -1,30 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minitalk.h                                         :+:      :+:    :+:   */
+/*   print_unsigned_int.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yonuma <yonuma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/10 17:31:04 by yonuma            #+#    #+#             */
-/*   Updated: 2024/11/22 16:26:45 by yonuma           ###   ########.fr       */
+/*   Created: 2024/05/01 21:32:13 by yonuma            #+#    #+#             */
+/*   Updated: 2024/05/25 13:17:51 by yonuma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINITALK_H
-# define MINITALK_H
+#include "ft_printf.h"
 
-# include <limits.h>
-# include <signal.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <string.h>
-# include <unistd.h>
+int	print_unsigned_int(unsigned int n)
+{
+	char	c;
+	int		check;
 
-void	ft_bzero(void *b, size_t len);
-void	*ft_memset(void *ptr, int value, size_t num);
-int		ft_atoi(const char *str);
-int		ft_printf(const char *format, ...);
-int		return_int(int str);
-int		return_chr(int c);
-
-#endif
+	if (n >= 10)
+	{
+		check = print_unsigned_int(n / 10);
+		if (check == -1)
+			return (-1);
+	}
+	c = '0' + (n % 10);
+	check = write(1, &c, 1);
+	if (check == -1)
+		return (-1);
+	return (0);
+}
